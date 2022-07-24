@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>chat</title>
+    <style>
+        div {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+
+        <h1>hello</h1>
+        <input type="text" placeholder="enter the message" id='input' />
+        <button id="button">send</button>
+        <ul id="chatMessage"></ul>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        var input = document.getElementById('input')
+        var button = document.getElementById('button')
+        var chatMessage = document.getElementById('chatMessage')
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (input.value) {
+                socket.emit('chat message', input.value);
+                input.value = '';
+            }
+        }
+        )
+        socket.on('chat message', function (msg) {
+            var item = document.createElement('li');
+            item.textContent = msg;
+            chatMessage.appendChild(item);
+            // window.scrollTo(0, document.body.scrollHeight);
+        });
+
+    </script>
+</body>
+
+</html>

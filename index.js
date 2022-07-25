@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser')
 const http = require('http')
 const { Server } = require('socket.io')
 const app = express();
@@ -10,7 +11,7 @@ const { v4: uuidv4 } = require("uuid");
 // static file
 app.use(express.static('public'))
 // app.use('/css', express.static(__dirname + 'public/css'))
-
+app.use(bodyParser.json())
 
 
 
@@ -31,11 +32,16 @@ app.get('/about', (req, res) => {
     res.sendFile(__dirname + '/views/about.html')
 })
 
+app.get('/registration', (req, res) => {
+    res.sendFile(__dirname + '/views/registration.html')
+
+})
+
 
 
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html')
+    res.sendFile(__dirname + '/views/index.html')
 })
 // for real time chat web application code 
 io.on('connection', (socket) => {
@@ -50,8 +56,16 @@ io.on('connection', (socket) => {
 })
 
 
+app.get('/login', (req, res) => {
+    res.sendFile(__dirname + '/views/login.html')
+})
 
 
+
+
+app.post('/registration', (req, res) => {
+    console.log(req.body)
+})
 
 
 

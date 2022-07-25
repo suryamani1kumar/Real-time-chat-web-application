@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+</head>
+
+<body>
+    <div>
+        <h1>Registration</h1>
+        <input type="text" autocomplete="off" placeholder="enter the name" id="name" /><br>
+        <input type="text" placeholder="enter the username" id="username" /><br>
+        <input type="password" id="password" /><br>
+        <input type="email" placeholder="email" id="email" /><br>
+        <button id="sumbit">sumbit</button><br>
+    </div>
+    <script>
+        // var name = document.getElementById('name').value;
+        // var username = document.getElementById('username').value;
+        // var email = document.getElementById('email').value;
+        // var password = document.getElementById('password').value;
+        var sumbit = document.getElementById('sumbit')
+
+
+        sumbit.addEventListener('click', registration)
+        //send the data as json (when we are using the js) htis is use as node 
+        //send the data as urlencode (when we are using the js) this is use as  php as use as default
+        async function registration(e) {
+            e.preventDefault()
+            var name = document.getElementById('name').value;
+            var username = document.getElementById('username').value;
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+            const result = await fetch('/registration', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, username, email, password, })
+
+            }).then((res) => res.json())
+            console.log(result)
+        }
+
+    </script>
+</body>
+
+</html>

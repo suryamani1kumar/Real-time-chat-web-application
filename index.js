@@ -5,7 +5,12 @@ const { Server } = require('socket.io')
 const app = express();
 const server = http.createServer(app)
 const io = new Server(server);
-const { v4: uuidv4 } = require("uuid");
+// const { v4: uuidv4 } = require("uuid");
+const bcrypt = require('bcrypt')
+const mongoose = require("mongoose");
+const userDetail = require('./model/registration');
+
+
 
 
 // static file
@@ -14,7 +19,8 @@ app.use(express.static('public'))
 app.use(bodyParser.json())
 
 
-
+mongoose.connect(`mongodb+srv://suryamani:ukyHynoxZHmmNUkD@portfoliosuryamani.j1vzhgp.mongodb.net/?retryWrites=true&w=majority`)
+    .then(res => console.log('db connect'))
 
 
 // for set ejs
@@ -62,9 +68,44 @@ app.get('/login', (req, res) => {
 
 
 
+app.post('/registration', async (req, res) => {
+    const { name, username, password, email, } = req.body
+    const Password = await bcrypt.hash(password, 10)
 
-app.post('/registration', (req, res) => {
-    console.log(req.body)
+    if (!username || typeof username !== 'string') {
+        return res.json({
+            status: 'error',
+            error: 'Invalid username'
+        })
+    }
+    if (!password || typeof password !== 'string') {
+        return res.json({
+            status: 'error',
+            error: 'Invalid password'
+        })
+    }
+    if (password.length <= 6) {
+        return res.json({
+            status: 'error',
+            error: 'password too small. Should be at least 6 characters'
+        })
+    }
+    try {
+        const Detail = await userDetail.create({
+            username, email, name, Password
+        })
+        console.log('Detail', Detail)
+    }
+    catch (err) {
+        // console.log('error', err.message)
+        // console.log(JSON.stringify(err))
+        if (err.code === 11000) {
+            //duplicate key
+            return res.json({ status: 'error', err: 'Username already  use' })
+        }
+        throw err
+    }
+    res.json({ status: 'ok' })
 })
 
 

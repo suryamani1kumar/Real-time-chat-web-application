@@ -11,10 +11,10 @@
 <body>
     <div>
         <h1>Registration</h1>
-        <input type="text" autocomplete="off" placeholder="enter the name" id="name" /><br>
-        <input type="text" placeholder="enter the username" id="username" /><br>
-        <input type="password" id="password" /><br>
-        <input type="email" placeholder="email" id="email" /><br>
+        <input type="text" autocomplete="off" placeholder="enter the name" id="name" />Name<br>
+        <input type="text" placeholder="enter the username" id="username" />username<br>
+        <input type="password" id="password" placeholder="enter the password" />password<br>
+        <input type="email" placeholder="email" id="email" />email<br>
         <button id="sumbit">sumbit</button><br>
     </div>
     <script>
@@ -43,6 +43,12 @@
 
             }).then((res) => res.json())
             console.log(result)
+            if (result.status === 'ok') {
+                // everything went fine
+                alert('sucess')
+            } else {
+                alert(result.err)
+            }
         }
 
     </script>

@@ -11,19 +11,20 @@
 <body>
     <div>
         <h1>Login</h1>
-        <input type="text" placeholder="enter the username" id="username" /><br>
-        <input type="password" id="password" /><br>
+        <input type="text" placeholder="enter the username" id="username" />Username<br>
+        <input type="password" id="password" />Password<br>
         <button id="sumbit">sumbit</button><br>
     </div>
     <script>
-        var username = document.getElementById('username')
-        var password = document.getElementById('password')
         var sumbit = document.getElementById('sumbit')
 
         sumbit.addEventListener('click', login)
 
-        function login(e) {
+        async function login(e) {
             e.preventDefault()
+            var username = document.getElementById('username').value
+            var password = document.getElementById('password').value
+            const login = await fetch('/login')
 
         }
 

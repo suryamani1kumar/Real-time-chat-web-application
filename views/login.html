@@ -24,7 +24,7 @@
             e.preventDefault()
             var username = document.getElementById('username').value
             var password = document.getElementById('password').value
-            const login = await fetch('/login', {
+            const login = await fetch('/userlogin/login', {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json'

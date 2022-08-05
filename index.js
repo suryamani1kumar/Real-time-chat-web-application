@@ -9,9 +9,10 @@ const io = new Server(server);
 const bcrypt = require('bcrypt')
 const mongoose = require("mongoose");
 const userDetail = require('./model/registration');
+const jwt = require('jsonwebtoken')
 
 
-
+const JWT_SECRET = 'abc@#12sury8427kumar!maniljg'
 
 // static file
 app.use(express.static('public'))
@@ -62,15 +63,8 @@ io.on('connection', (socket) => {
 })
 
 
-app.get('/login', (req, res) => {
-    res.sendFile(__dirname + '/views/login.html')
-})
-
-
-
 app.post('/registration', async (req, res) => {
-    const { name, username, password, email, } = req.body
-    const Password = await bcrypt.hash(password, 10)
+    const { name, username, password: plaintextpassword, email, } = req.body
 
     if (!username || typeof username !== 'string') {
         return res.json({
@@ -78,21 +72,24 @@ app.post('/registration', async (req, res) => {
             error: 'Invalid username'
         })
     }
-    if (!password || typeof password !== 'string') {
+    if (!plaintextpassword || typeof plaintextpassword !== 'string') {
         return res.json({
             status: 'error',
             error: 'Invalid password'
         })
     }
-    if (password.length <= 6) {
+    if (plaintextpassword.length <= 6) {
         return res.json({
             status: 'error',
             error: 'password too small. Should be at least 6 characters'
         })
     }
+
+    const password = await bcrypt.hash(plaintextpassword, 10)
+
     try {
         const Detail = await userDetail.create({
-            username, email, name, Password
+            username, email, name, password
         })
         console.log('Detail', Detail)
     }
@@ -111,47 +108,51 @@ app.post('/registration', async (req, res) => {
 
 
 
+app.get('/login', (req, res) => {
+    res.sendFile(__dirname + '/views/login.html')
+})
 
+//client ->server: Your client *somehow* as to authenticate who it is
+//why -> server is a central computer which You control
+//client (jhon)->a computer which you do not control
 
+//1. client proves itself somehow on the secret/date is non changeable (jwt)
+//2. client-Server share a secret (Cookie)
 
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body
+    const user = await userDetail.findOne({ username }).lean()  //recevied json represtation of object
 
+    if (!user) {
+        return res.json({ status: 'ok', error: 'Invaild username/password' })
+    }
+    if (await bcrypt.compare(password, user.password)) {
+        // the username, password combination is sucessful
 
+        const token = jwt.sign(
+            {
+                id: user._id,
+                username: user.username
+            },
+            JWT_SECRET
+        )
+        return res.json({ status: 'ok', data: token })
 
+    }
 
+    res.json({ status: 'error', error: 'Invalid username/password' })
+})
 
+app.get('/change-password', (req, res) => {
+    res.sendFile(__dirname + "/views/change-password.html")
 
+})
+app.post('/change-password', (req, res) => {
+    const { token } = req.body
+    const user = jwt.verify(token, JWT_SECRET)
+    console.log(user)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+})
 
 
 

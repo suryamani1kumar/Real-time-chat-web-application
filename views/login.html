@@ -6,15 +6,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login</title>
+    <link rel="stylesheet" href="css/login.css" />
 </head>
 
 <body>
-    <div>
-        <h1>Login</h1>
-        <input type="text" placeholder="enter the username" id="username" />Username<br>
-        <input type="password" id="password" />Password<br>
-        <button id="sumbit">sumbit</button><br>
+
+    <div class="login-container">
+        <div class="login-banner">
+            <img src="https://pixabay.com/images/search/nature/" alt="image">
+        </div>
+        <div class="login-user">
+            <h1>Welcome</h1>
+            <input type="text" placeholder="username" id="username" required /><br>
+            <input type="password" id="password" placeholder="password" required /><br>
+            <a href="/change-password">Forget Password</a>
+            <button id="sumbit">Login</button><br>
+            <span>Not registered yet ? <a href="/registration">Create an Account</a></span>
+        </div>
     </div>
+
+
     <script>
         var sumbit = document.getElementById('sumbit')
 
@@ -24,19 +35,19 @@
             e.preventDefault()
             var username = document.getElementById('username').value
             var password = document.getElementById('password').value
-            const login = await fetch('/userlogin/login', {
+            const login = await fetch('/userlogin', {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ username, password })
             }).then((res) => res.json())
-            // console.log(login)
+            console.log(login)
             if (login.status === 'ok') {
                 // everything went fine
                 console.log('Got the token', login.data)
                 localStorage.setItem('token', login.data)
-                alert('sucess')
+                // alert('sucess')
             } else {
                 alert('register your self ')
             }

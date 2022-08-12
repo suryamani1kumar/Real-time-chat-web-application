@@ -29,8 +29,8 @@ app.get('/home', (req, res) => {
     res.render('home')
 })
 
-app.get('/about', (req, res) => {
-    res.sendFile(__dirname + '/views/about.html')
+app.get('/VideoChat', (req, res) => {
+    res.sendFile(__dirname + '/views/VideoChat.html')
 })
 
 app.get('/', (req, res) => {

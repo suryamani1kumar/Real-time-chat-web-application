@@ -46,6 +46,7 @@
             console.log(result)
             if (result.status === 'ok') {
                 // everything went fine
+                window.location.href = '/login'
             } else {
                 alert(result.err)
             }

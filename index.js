@@ -11,6 +11,7 @@ const mongoose = require("mongoose");
 const loginRoutes = require('./routes/login')
 const registrationRoutes = require('./routes/registration')
 const changePasswordRoutes = require('./routes/change-password')
+const authMiddleware = require('./middleware/auth')
 
 // static file
 app.use(express.static('public'))
@@ -61,6 +62,7 @@ app.use('/registration', registrationRoutes);
 app.get('/login', (req, res) => {
     res.sendFile(__dirname + '/views/login.html')
 })
+
 app.use('/userlogin', loginRoutes);
 
 

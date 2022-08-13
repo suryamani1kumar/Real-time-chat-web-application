@@ -63,8 +63,9 @@
                 console.log('Got the token', login.data)
                 localStorage.setItem('token', login.data)
                 // alert('sucess')
+                window.location.href = '/VideoChat'
             } else {
-                alert('register your self ')
+                alert('register your self ');
             }
         }
 

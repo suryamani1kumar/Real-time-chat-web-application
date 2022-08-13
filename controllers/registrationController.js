@@ -3,8 +3,19 @@ const bcrypt = require('bcrypt')
 
 const userRegistration = async (req, res) => {
 
-    const { name, username, password: plaintextpassword, email, } = req.body
-
+    const { name, username, password: plaintextpassword, email, number } = req.body
+    if (number.length >= 10) {
+        return res.json({
+            status: 'error',
+            error: 'number be at least 10 characters'
+        })
+    }
+    if (typeof number !== 'string') {
+        return res.json({
+            status: 'error',
+            error: 'Invalid number'
+        })
+    }
     if (!username || typeof username !== 'string') {
         return res.json({
             status: 'error',
@@ -28,7 +39,7 @@ const userRegistration = async (req, res) => {
 
     try {
         const Detail = await userDetail.create({
-            username, email, name, password
+            username, email, name, password, number
         })
         console.log('Detail', Detail)
     }

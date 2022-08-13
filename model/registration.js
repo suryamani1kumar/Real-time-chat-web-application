@@ -19,6 +19,11 @@ const userregistration = new mongoose.Schema({
         require: true,
         unique: true,
     },
+    number: {
+        type: Number,
+        require: true,
+        unique: true,
+    },
 
 })
 

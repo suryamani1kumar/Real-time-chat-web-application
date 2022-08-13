@@ -10,21 +10,27 @@
 </head>
 
 <body>
-    <div>
-        <h1>Registration</h1>
-        <input type="text" autocomplete="off" placeholder="enter the name" id="name" />Name<br>
-        <input type="text" placeholder="enter the username" id="username" />username<br>
-        <input type="password" id="password" placeholder="enter the password" />password<br>
-        <input type="email" placeholder="email" id="email" />email<br>
-        <button id="sumbit">sumbit</button><br>
+    <div class="registration">
+        <h1>CREATE ACCOUNT</h1>
+        <div class="registrationForm">
+            <input type="text" autocomplete="off" placeholder=" Name" id="name" /><br>
+            <input type="text" placeholder="Number" id="number" /><br>
+            <input type="email" placeholder="Email" id="email" /><br>
+            <input type="text" placeholder="Username" id="username" /><br>
+            <input type="password" id="password" placeholder="Password" /><br>
+            <div>
+                <input type="checkbox" name="term and condition">
+                <label>I agree to the Terms of Service and Privacy Policy</label>
+            </div>
+
+        </div>
+        <button id="sumbit">Sign up </button><br>
+        <div>
+            <span>Aready have an Account <a href="/login">Sign in</a></span>
+        </div>
     </div>
     <script>
-        // var name = document.getElementById('name').value;
-        // var username = document.getElementById('username').value;
-        // var email = document.getElementById('email').value;
-        // var password = document.getElementById('password').value;
         var sumbit = document.getElementById('sumbit')
-
 
         sumbit.addEventListener('click', registration)
         //send the data as json (when we are using the js) htis is use as node 
@@ -34,13 +40,14 @@
             var name = document.getElementById('name').value;
             var username = document.getElementById('username').value;
             var email = document.getElementById('email').value;
+            var number = document.getElementById('number').value;
             var password = document.getElementById('password').value;
             const result = await fetch('/registration', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ name, username, email, password, })
+                body: JSON.stringify({ name, username, email, number, password, })
 
             }).then((res) => res.json())
             console.log(result)

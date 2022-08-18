@@ -6,7 +6,7 @@ const app = express();
 require('dotenv').config()
 const server = http.createServer(app)
 const io = new Server(server);
-// const { v4: uuidv4 } = require("uuid");
+const { v4: uuidv4 } = require("uuid");
 const mongoose = require("mongoose");
 const loginRoutes = require('./routes/login')
 const registrationRoutes = require('./routes/registration')
@@ -31,7 +31,13 @@ app.get('/home', (req, res) => {
 })
 
 app.get('/VideoChat', (req, res) => {
-    res.sendFile(__dirname + '/views/VideoChat.html')
+    // res.sendFile(__dirname + '/views/VideoChat.html')
+    res.redirect(`VideoChat ${uuidv4()}`)
+
+})
+app.get('/VideoChat:room', (req, res) => {
+    res.render('VideoChat', { roomId: req.param.room })
+
 })
 
 app.get('/', (req, res) => {
